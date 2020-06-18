@@ -1,0 +1,13 @@
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\bin\Debug\Cape_Setter.exe.config
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\bin\Debug\Cape_Setter.exe
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\bin\Debug\Cape_Setter.pdb
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.csprojAssemblyReference.cache
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.Form1.resources
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.Properties.Resources.resources
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.csproj.GenerateResource.cache
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.csproj.CoreCompileInputs.cache
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.exe
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.pdb
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\bin\Debug\Newtonsoft.Json.dll
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\bin\Debug\Newtonsoft.Json.xml
+C:\Users\swour\source\repos\Cape_Setter\Cape_Setter\obj\Debug\Cape_Setter.csproj.CopyComplete
