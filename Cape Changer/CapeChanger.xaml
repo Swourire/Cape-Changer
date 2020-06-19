@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cape_Changer"
         mc:Ignorable="d"
-        Title="CapeChanger" Height="800" Width="767" ResizeMode="NoResize">
+        Title="Cape Changer" Height="800" Width="767" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
