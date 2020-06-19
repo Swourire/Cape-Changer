@@ -14,14 +14,16 @@ namespace Cape_Changer
     {
         public string minecraftSkinPath;
         public string minecraftStartPath;
+        public string selectedCape;
 
         public CapeChanger()
         {
-            /*minecraftSkinPath = FindSkinPackPath();
-            if (minecraftSkinPath == "") Process.GetCurrentProcess().Kill();*/
+            minecraftSkinPath = FindSkinPackPath();
+            if (minecraftSkinPath == "") Process.GetCurrentProcess().Kill();
 
             InitializeComponent();
 
+            selectedCape = GetCapePath() + "cape_zizi.png";
             foreach (string capePath in Directory.GetFiles(GetCapePath()))
             {
                 AddCapeInDisplayedList(capePath);
@@ -69,18 +71,32 @@ namespace Cape_Changer
         {
             string pathGeometry = minecraftSkinPath + "/geometry.json";
             string pathSkins = minecraftSkinPath + "/skins.json";
+            string pathCape = minecraftSkinPath + "/cape.png";
             string localPathSkins = Directory.GetCurrentDirectory() + "/resource/internal/skins.json";
 
             if (!File.Exists(pathGeometry))
             {
+                Debug.WriteLine(pathGeometry);
+                Debug.WriteLine(Directory.GetCurrentDirectory());
                 File.Copy(Directory.GetCurrentDirectory() + "/resource/internal/geometry.json", pathGeometry);
             }
 
-            if (!File.Exists(pathSkins) || (new StreamReader(pathSkins)).ReadToEnd() != (new StreamReader(localPathSkins).ReadToEnd()))
+            if (!File.Exists(pathSkins))
             {
                 File.Copy(localPathSkins, pathSkins);
             }
+            else if((new StreamReader(pathSkins)).ReadToEnd() != (new StreamReader(localPathSkins).ReadToEnd()))
+            {
+                File.Delete(pathSkins);
+                File.Copy(localPathSkins, pathSkins);
+            }
 
+            if(File.Exists(pathCape))
+            {
+                File.Delete(pathCape);
+            }
+
+            File.Copy(selectedCape, pathCape);
             restartMinecraft();
         }
 
@@ -120,7 +136,7 @@ namespace Cape_Changer
             Process.Start("minecraft://");
         }
 
-        /*private string FindSkinPackPath()
+        private string FindSkinPackPath()
         {
             Process[] processes = Process.GetProcessesByName("Minecraft.Windows");
 
@@ -137,6 +153,6 @@ namespace Cape_Changer
                 MessageBox.Show("Start Minecraft, before Launching the application.");
                 return "";
             }
-        }*/
+        }
     }
 }
