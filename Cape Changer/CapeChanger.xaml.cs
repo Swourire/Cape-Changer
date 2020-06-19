@@ -113,10 +113,10 @@ namespace Cape_Changer
             image = ImageUtils.CropImage(image, new Rectangle(0, 0, width, height));
 
             // Resize image :
-            int multiplier = 20;
+            int multiplier = 16;
 
-            int newWidth = width * multiplier;
-            int newHeight = height * multiplier;
+            int newWidth = width * multiplier - multiplier;
+            int newHeight = height * multiplier - multiplier;
 
             Bitmap imageInBitmap = (Bitmap)image;
             Bitmap newImage = new Bitmap(newWidth, newHeight);
@@ -125,7 +125,7 @@ namespace Cape_Changer
             {
                 for(int y = 0; y < newHeight; y++)
                 {
-                    newImage.SetPixel(x, y, imageInBitmap.GetPixel(x >> width / multiplier, y >> height / multiplier));
+                    newImage.SetPixel(x, y, imageInBitmap.GetPixel(x >> (int) Math.Sqrt(multiplier), y >> (int) Math.Sqrt(multiplier) ));
                 }
             }
 
