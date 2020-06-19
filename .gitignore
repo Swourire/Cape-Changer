@@ -1,6 +1,3 @@
-
-.vs/Cape Changer/v16/.suo
 */bin/
 */obj/
-.vs/slnx.sqlite
-.vs/slnx.sqlite-journal
+.vs/*
