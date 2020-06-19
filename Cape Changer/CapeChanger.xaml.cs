@@ -6,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Media.Imaging;
 
 namespace Cape_Changer
 {
@@ -26,7 +25,7 @@ namespace Cape_Changer
             selectedCape = GetCapePath() + "cape_zizi.png";
             foreach (string capePath in Directory.GetFiles(GetCapePath()))
             {
-                AddCapeInDisplayedList(capePath);
+                AddCapeInDisplayedList(Image.FromFile(capePath));
             }
         }
 
@@ -63,7 +62,7 @@ namespace Cape_Changer
                 File.Copy(capePath, finalPath);
 
                 // Add cape in the displayed list :
-                AddCapeInDisplayedList(finalPath);
+                AddCapeInDisplayedList(Image.FromFile(capePath));
             }
         }
 
@@ -97,34 +96,55 @@ namespace Cape_Changer
             }
 
             File.Copy(selectedCape, pathCape);
-            restartMinecraft();
+            RestartMinecraft();
         }
 
         /// <summary>
         /// Add a cape in the interface.
         /// </summary>
         /// <param name="capePath">the cape path</param>
-        private void AddCapeInDisplayedList(string capePath)
+        private void AddCapeInDisplayedList(Image image)
         {
+            // Get the cape image section width and height :
+            int width = image.Width * 24 / image.Width;
+            int height = image.Height * 18 / image.Height;
+
+            // Crop the image with section sizes :
+            image = ImageUtils.CropImage(image, new Rectangle(0, 0, width, height));
+
+            // Resize image :
+            int multiplier = 20;
+
+            int newWidth = width * multiplier;
+            int newHeight = height * multiplier;
+
+            Bitmap imageInBitmap = (Bitmap)image;
+            Bitmap newImage = new Bitmap(newWidth, newHeight);
+
+            for(int x = 0; x < newWidth; x++)
+            {
+                for(int y = 0; y < newHeight; y++)
+                {
+                    newImage.SetPixel(x, y, imageInBitmap.GetPixel(x >> width / multiplier, y >> height / multiplier));
+                }
+            }
+
+            // Create the controle :
+            //System.Windows.Controls.Button button = new System.Windows.Controls.Button();
             System.Windows.Controls.Image cape = new System.Windows.Controls.Image();
 
-            BitmapImage bitmapImage = new BitmapImage(new Uri(capePath));
-            //Image image = ImageUtils.CropImage(Image.FromFile(capePath), new Rectangle(0, 0, 24, 18));
+            cape.Source = ImageUtils.BitmapToBitmapImage(newImage);
 
-            cape.Source = bitmapImage;
-            cape.Width = 500;
-            cape.Height = 200;
+            cape.Width = newWidth;
+            cape.Height = newHeight;
+
             cape.Margin = new Thickness(15);
 
-            //cape.Source = ImageUtils.ImageToBitmapImage(ImageUtils.PixelateImage(image));
-            /*cape.Source = ImageUtils.ImageToBitmapImage(ImageUtils.Pixelate
-                (ImageUtils.ResizeImage(image, image.Width, image.Height),
-                new Rectangle(0, 0, image.Width, image.Height), (int)(image.Width * .25 + image.Height * .25) / 2));*/
-
+            // Add the controle in the cape list :
             CapesList.Children.Add(cape);
         }
 
-        private void restartMinecraft()
+        private void RestartMinecraft()
         {
             Process[] processes = Process.GetProcessesByName("Minecraft.Windows");
 
