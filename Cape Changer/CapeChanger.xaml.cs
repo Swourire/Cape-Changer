@@ -49,9 +49,9 @@ namespace Cape_Changer
             {
                 if(button.Uid == selectedCape)
                 {
-                    //File.Delete(selectedCape); //TODO: un-TODO this, Swourire :)
-
                     button.Visibility = Visibility.Collapsed;
+
+                    File.Delete(selectedCape);
                 }
             }
         }
