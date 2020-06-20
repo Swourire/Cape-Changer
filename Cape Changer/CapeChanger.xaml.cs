@@ -7,7 +7,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Media.Imaging;
+using System.Windows.Media;
+
 
 namespace Cape_Changer
 {
@@ -24,10 +25,9 @@ namespace Cape_Changer
 
             InitializeComponent();
 
-            selectedCape = GetCapePath() + "cape_zizi.png";
             foreach (string capePath in Directory.GetFiles(GetCapePath()))
             {
-                AddCapeInDisplayedList(Image.FromFile(capePath));
+                AddCapeInDisplayedList(Image.FromFile(capePath), capePath);
             }
         }
 
@@ -43,6 +43,19 @@ namespace Cape_Changer
             }
 
             return path;
+        }
+
+        public void RemoveCape(object sender, RoutedEventArgs e)
+        {
+            foreach(System.Windows.Controls.Button button in CapesList.Children)
+            {
+                if(button.Uid == selectedCape)
+                {
+                    button.Visibility = Visibility.Collapsed;
+
+                    File.Delete(selectedCape);
+                }
+            }
         }
 
         private void AddCape(object sender, RoutedEventArgs e)
@@ -64,8 +77,30 @@ namespace Cape_Changer
                 File.Copy(capePath, finalPath);
 
                 // Add cape in the displayed list :
-                AddCapeInDisplayedList(Image.FromFile(capePath));
+                AddCapeInDisplayedList(Image.FromFile(capePath), capePath);
             }
+        }
+
+        private void PreSelect(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Button button = (System.Windows.Controls.Button)sender;
+
+            selectedCape = button.Uid;
+
+            foreach (System.Windows.Controls.Button buttonOfList in CapesList.Children)
+            {
+                if (buttonOfList.Uid == selectedCape)
+                {
+                    buttonOfList.Background = new SolidColorBrush((System.Windows.Media.Color)System.
+                            Windows.Media.ColorConverter.ConvertFromString("#55FF55"));
+                }
+                else
+                {
+                    buttonOfList.Background = new SolidColorBrush((System.Windows.Media.Color)System.
+                            Windows.Media.ColorConverter.ConvertFromString("#FF5555"));
+                }
+            }
+
         }
 
         private void SelectCape(object sender, RoutedEventArgs e)
@@ -117,11 +152,7 @@ namespace Cape_Changer
             RestartMinecraft();
         }
 
-        /// <summary>
-        /// Add a cape in the interface.
-        /// </summary>
-        /// <param name="capePath">the cape path</param>
-        private void AddCapeInDisplayedList(Image image)
+        private void AddCapeInDisplayedList(Image image, string imagePath)
         {
 
             // Get the cape image section width and height :
@@ -144,23 +175,38 @@ namespace Cape_Changer
             {
                 for(int y = 0; y < newHeight; y++)
                 {
-                    newImage.SetPixel(x, y, imageInBitmap.GetPixel(x >> (int) Math.Sqrt(multiplier), y >> (int) Math.Sqrt(multiplier) ));
+                    newImage.SetPixel(x, y, imageInBitmap.GetPixel(x >> (int) Math.Sqrt(multiplier), y >> (int) Math.Sqrt(multiplier)));
                 }
             }
 
-            // Create the controle :
-            //System.Windows.Controls.Button button = new System.Windows.Controls.Button();
+            // Create image controle :
             System.Windows.Controls.Image cape = new System.Windows.Controls.Image();
 
             cape.Source = ImageUtils.BitmapToBitmapImage(newImage);
 
-            cape.Width = newWidth;
-            cape.Height = newHeight;
+            // Create the button controle and add image in his content :
+            System.Windows.Controls.Button button = new System.Windows.Controls.Button();
 
-            cape.Margin = new Thickness(15);
+            button.Content = cape;
+
+            button.Width = newWidth;
+            button.Height = newHeight;
+
+            button.Margin = new Thickness(0);
+            button.Padding = new Thickness(16);
+
+            button.Foreground = null;
+            button.BorderBrush = null;
+
+            button.Click += PreSelect;
+
+            button.Background = new SolidColorBrush((System.Windows.Media.Color)System.
+                Windows.Media.ColorConverter.ConvertFromString("#FF5555"));
+
+            button.Uid = imagePath;
 
             // Add the controle in the cape list :
-            CapesList.Children.Add(cape);
+            CapesList.Children.Add(button);
         }
 
         private void RestartMinecraft()

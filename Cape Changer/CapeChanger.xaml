@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cape_Changer"
         mc:Ignorable="d"
-        Title="CapeChanger" Height="600" Width="500">
+        Title="Cape Changer" Height="800" Width="767" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
 
         <!-- Select the cape in the list -->
         <ScrollViewer>
-            <StackPanel x:Name="CapesList" Grid.Row="0" Background="#FFFF55"></StackPanel>
+            <WrapPanel x:Name="CapesList" Grid.Row="0" Background="#FFDDDDDD"></WrapPanel>
         </ScrollViewer>
 
         <!-- Bottom buttons -->
@@ -22,13 +22,18 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Button Content="Add cape" Click="AddCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+                <Button Content="Remove cape" Click="RemoveCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
             </Grid>
 
             <Grid Grid.Row="1">
+                <Button Content="Add cape" Click="AddCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+            </Grid>
+            
+            <Grid Grid.Row="2">
                 <Button Content="Select cape" Click="SelectCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
             </Grid>
         </Grid>
