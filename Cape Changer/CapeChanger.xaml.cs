@@ -152,6 +152,11 @@ namespace Cape_Changer
             RestartMinecraft();
         }
 
+        private void SelectSkin(object sender, RoutedEventArgs e)
+        {
+            //TODO: Swourire
+        }
+
         private void AddCapeInDisplayedList(Image image, string imagePath)
         {
 

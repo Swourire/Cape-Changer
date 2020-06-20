@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Cape_Changer"
         mc:Ignorable="d"
-        Title="Cape Changer" Height="800" Width="767" ResizeMode="NoResize">
+        Title="Cape Changer" Height="850" Width="767" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.4*"/>
         </Grid.RowDefinitions>
 
         <!-- Select the cape in the list -->
@@ -23,6 +23,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -32,9 +33,13 @@
             <Grid Grid.Row="1">
                 <Button Content="Add cape" Click="AddCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
             </Grid>
-            
+
             <Grid Grid.Row="2">
                 <Button Content="Select cape" Click="SelectCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Button Content="Select skin" Click="SelectSkin" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
             </Grid>
         </Grid>
     </Grid>
