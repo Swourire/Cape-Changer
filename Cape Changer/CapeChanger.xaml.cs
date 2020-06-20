@@ -24,7 +24,7 @@ namespace Cape_Changer
             minecraftSkinPath = FindSkinPackPath();
             if (minecraftSkinPath == "") Process.GetCurrentProcess().Kill();
 
-            selectedSkin = Path.Combine(minecraftSkinPath, @"\steve.png");
+            selectedSkin = minecraftSkinPath + @"\steve.png";
             InitializeComponent();
 
             // Add all capes in the list :
@@ -145,28 +145,49 @@ namespace Cape_Changer
             string pathGeometry = minecraftSkinPath + "/geometry.json";
             string pathSkins = minecraftSkinPath + "/skins.json";
             string pathCape = minecraftSkinPath + "/cape.png";
-            string localPathSkins = Directory.GetCurrentDirectory() + "/resource/internal/skins.json";
+            string pathResourcePack = minecraftStartPath + @"\data\resource_packs\vanilla\ui";
 
+            string localPathSkins = Directory.GetCurrentDirectory() + "/resource/internal/skins.json";
+            string localUiDefs = Directory.GetCurrentDirectory() + "/resource/internal/_ui_defs.json";
+            string distantUiDefs = pathResourcePack + "/_ui_defs.json";
+            string localStartScreen = Directory.GetCurrentDirectory() + "/resource/internal/start_screen.json";
+            string distantStartScreen = pathResourcePack + "/start_screen.json";
+            
             if (!File.Exists(pathGeometry))
             {
                 File.Copy(Directory.GetCurrentDirectory() + "/resource/internal/geometry.json", pathGeometry);
             }
 
-            StreamReader stream1 = new StreamReader(pathSkins);
-            StreamReader stream2 = new StreamReader(localPathSkins);
-
             if (!File.Exists(pathSkins))
             {
                 File.Copy(localPathSkins, pathSkins);
             }
-            else if (stream1.ReadToEnd() != stream2.ReadToEnd())
+            else if (CompareTwoFiles(localPathSkins, pathSkins))
             {
-                stream1.Close();
-                stream2.Close();
                 File.Delete(pathSkins);
                 File.Copy(localPathSkins, pathSkins);
             }
 
+            if (!File.Exists(distantUiDefs))
+            {
+                File.Copy(localUiDefs, distantUiDefs);
+            }else if (CompareTwoFiles(localUiDefs, distantUiDefs))
+            {
+                File.Delete(distantUiDefs);
+                File.Copy(localUiDefs, distantUiDefs);
+            }
+
+            if (!File.Exists(distantStartScreen))
+            {
+                File.Copy(localStartScreen, distantStartScreen);
+            }
+            else if(CompareTwoFiles(localStartScreen, distantStartScreen))
+            {
+                File.Delete(distantStartScreen);
+                File.Copy(localStartScreen, distantStartScreen);
+            }
+
+          
             if (File.Exists(pathCape))
             {
                 try
@@ -185,6 +206,17 @@ namespace Cape_Changer
 
             File.Copy(selectedCape, pathCape);
             RestartMinecraft();
+        }
+
+        private bool CompareTwoFiles(string path1, string path2)
+        {
+            StreamReader stream1 = new StreamReader(path1);
+            StreamReader stream2 = new StreamReader(path2);
+            bool returnVal = stream1.ReadToEnd() != stream2.ReadToEnd();
+            stream1.Close();
+            stream2.Close();
+
+            return returnVal;
         }
 
         private void DisplaySkin()
@@ -297,7 +329,7 @@ namespace Cape_Changer
             {
                 string fileName = processes[0].MainModule.FileName;
                 int removePosition = fileName.Length - 21;
-                minecraftStartPath = fileName;
+                minecraftStartPath = fileName.Remove(removePosition);
 
                 return Path.Combine(fileName.Remove(removePosition), @"data\skin_packs\vanilla");
             }
