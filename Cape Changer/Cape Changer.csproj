@@ -76,6 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Utils\FileUtil.cs" />
     <Compile Include="Utils\ImageUtils.cs" />
     <Page Include="CapeChanger.xaml">
       <Generator>MSBuild:Compile</Generator>

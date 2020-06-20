@@ -1,11 +1,13 @@
 ﻿using Cape_Changer.Utils;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Cape_Changer
 {
@@ -80,19 +82,35 @@ namespace Cape_Changer
                 File.Copy(Directory.GetCurrentDirectory() + "/resource/internal/geometry.json", pathGeometry);
             }
 
+            StreamReader stream1 = new StreamReader(pathSkins);
+            StreamReader stream2 = new StreamReader(localPathSkins);
+
             if (!File.Exists(pathSkins))
             {
                 File.Copy(localPathSkins, pathSkins);
             }
-            else if((new StreamReader(pathSkins)).ReadToEnd() != (new StreamReader(localPathSkins).ReadToEnd()))
+            else if(stream1.ReadToEnd() != stream2.ReadToEnd())
             {
+                stream1.Close();
+                stream2.Close();
                 File.Delete(pathSkins);
                 File.Copy(localPathSkins, pathSkins);
             }
 
             if(File.Exists(pathCape))
             {
-                File.Delete(pathCape);
+                try
+                {
+                    File.Delete(pathCape);
+                }
+                catch(System.IO.IOException)
+                {
+                   List<Process> processes = FileUtil.WhoIsLocking(pathCape);
+                    foreach(Process process in processes)
+                    {
+                        Debug.WriteLine(process);
+                    }
+                }
             }
 
             File.Copy(selectedCape, pathCape);
@@ -105,6 +123,7 @@ namespace Cape_Changer
         /// <param name="capePath">the cape path</param>
         private void AddCapeInDisplayedList(Image image)
         {
+
             // Get the cape image section width and height :
             int width = image.Width * 24 / image.Width;
             int height = image.Height * 18 / image.Height;
