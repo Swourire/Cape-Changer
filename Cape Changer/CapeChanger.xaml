@@ -24,27 +24,27 @@
 
         <!-- Bottom buttons -->
         <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.4*"/>
+            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="0">
-                <Button Content="Remove cape" Click="RemoveCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <Button Grid.Row="0" Content="Remove cape" Click="RemoveCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+                <Button Grid.Row="1" Content="Add cape" Click="AddCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+                <Button Grid.Row="2" Content="Select cape" Click="SelectCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+                <Button Grid.Row="3" Content="Select skin" Click="SelectSkin" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
             </Grid>
 
-            <Grid Grid.Row="1">
-                <Button Content="Add cape" Click="AddCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
-            </Grid>
-
-            <Grid Grid.Row="2">
-                <Button Content="Select cape" Click="SelectCape" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
-            </Grid>
-
-            <Grid Grid.Row="3">
-                <Button Content="Select skin" Click="SelectSkin" Background="#5555FF" BorderBrush="{x:Null}" FontSize="24" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
+            <Grid Grid.Column="1">
+                <Button x:Name="UpdateButton" Content="Update" Click="Update" BorderBrush="{x:Null}" FontSize="36" FontFamily="Calibri" FontWeight="Bold" Foreground="White"/>
             </Grid>
         </Grid>
     </Grid>
