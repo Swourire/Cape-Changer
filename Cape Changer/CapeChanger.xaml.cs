@@ -227,34 +227,20 @@ namespace Cape_Changer
             image = ImageUtils.CropImage(image, new Rectangle(0, 0, width, height));
 
             // Resize image :
-            int multiplier = 16;
-
-            int newWidth = width * multiplier - multiplier;
-            int newHeight = height * multiplier - multiplier;
-
-            Bitmap imageInBitmap = (Bitmap)image;
-            Bitmap newImage = new Bitmap(newWidth, newHeight);
-
-            for(int x = 0; x < newWidth; x++)
-            {
-                for(int y = 0; y < newHeight; y++)
-                {
-                    newImage.SetPixel(x, y, imageInBitmap.GetPixel(x >> (int) Math.Sqrt(multiplier), y >> (int) Math.Sqrt(multiplier)));
-                }
-            }
+            image = ImageUtils.ReziseImage(image, 16, 16);
 
             // Create image controle :
             System.Windows.Controls.Image cape = new System.Windows.Controls.Image();
 
-            cape.Source = ImageUtils.BitmapToBitmapImage(newImage);
+            cape.Source = ImageUtils.ImageToBitmapImage(image);
 
             // Create the button controle and add image in his content :
             System.Windows.Controls.Button button = new System.Windows.Controls.Button();
 
             button.Content = cape;
 
-            button.Width = newWidth;
-            button.Height = newHeight;
+            button.Width = image.Width;
+            button.Height = image.Height;
 
             button.Margin = new Thickness(0);
             button.Padding = new Thickness(16);

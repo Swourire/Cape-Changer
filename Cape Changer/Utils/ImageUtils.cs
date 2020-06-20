@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Media.Imaging;
@@ -44,6 +45,30 @@ namespace Cape_Changer.Utils
             Bitmap bitmap = new Bitmap(image);
 
             return bitmap.Clone(cropRectangle, bitmap.PixelFormat);
+        }
+
+        public static Image ReziseImage(Image image, int multiplierX, int multiplierY)
+        {
+            //multiplierX = image.Width * multiplierX;
+            //multiplierY = image.Height * multiplierY;
+
+            //TODO: adapter cette image pour qu'elle fonctionne avec tout multiple.
+
+            int newWidth = image.Width * multiplierX - multiplierX;
+            int newHeight = image.Height * multiplierY - multiplierY;
+
+            Bitmap imageInBitmap = (Bitmap)image;
+            Bitmap newImage = new Bitmap(newWidth, newHeight);
+
+            for (int x = 0; x < newWidth; x++)
+            {
+                for (int y = 0; y < newHeight; y++)
+                {
+                    newImage.SetPixel(x, y, imageInBitmap.GetPixel(x >> (int)Math.Sqrt(multiplierX), y >> (int)Math.Sqrt(multiplierY)));
+                }
+            }
+
+            return newImage;
         }
     }
 }
