@@ -77,6 +77,15 @@ namespace Cape_Changer
             
             if (fileBrowser.ShowDialog() == true)
             {
+                // Verify if the file size is valid :
+                Image image = Image.FromFile(fileBrowser.FileName);
+
+                if (image.Width != 64 || image.Height != 32)
+                {
+                    MessageBox.Show("Please put a valid cape format.");
+                    return;
+                }
+
                 // Copy the cape in cape list folder :
                 string capePath = fileBrowser.FileName;
                 string capeName = Path.GetFileName(capePath);
@@ -90,7 +99,7 @@ namespace Cape_Changer
             }
         }
 
-        private void PreSelect(object sender, RoutedEventArgs e)
+        private void SelectCape(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.Button button = (System.Windows.Controls.Button)sender;
 
@@ -109,9 +118,29 @@ namespace Cape_Changer
                             Windows.Media.ColorConverter.ConvertFromString("#FF5555"));
                 }
             }
+
+            ChangeUpdateButtonColor();
         }
 
-        private void SelectCape(object sender, RoutedEventArgs e)
+        private void SelectSkin(object sender, RoutedEventArgs e)
+        {
+            File.Delete(selectedSkin);
+
+            OpenFileDialog fileBrowser = new OpenFileDialog();
+
+            fileBrowser.Title = "Skin Texture";
+            fileBrowser.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
+
+            if (fileBrowser.ShowDialog() == true)
+            {
+                // Add the skin in capes list and interface :
+                File.Copy(fileBrowser.FileName, selectedSkin);
+
+                DisplaySkin();
+            }
+        }
+
+        private void Update(object sender, RoutedEventArgs e)
         {
             string pathGeometry = minecraftSkinPath + "/geometry.json";
             string pathSkins = minecraftSkinPath + "/skins.json";
@@ -130,7 +159,7 @@ namespace Cape_Changer
             {
                 File.Copy(localPathSkins, pathSkins);
             }
-            else if(stream1.ReadToEnd() != stream2.ReadToEnd())
+            else if (stream1.ReadToEnd() != stream2.ReadToEnd())
             {
                 stream1.Close();
                 stream2.Close();
@@ -138,16 +167,16 @@ namespace Cape_Changer
                 File.Copy(localPathSkins, pathSkins);
             }
 
-            if(File.Exists(pathCape))
+            if (File.Exists(pathCape))
             {
                 try
                 {
                     File.Delete(pathCape);
                 }
-                catch(IOException)
+                catch (IOException)
                 {
-                   List<Process> processes = FileUtil.WhoIsLocking(pathCape);
-                    foreach(Process process in processes)
+                    List<Process> processes = FileUtil.WhoIsLocking(pathCape);
+                    foreach (Process process in processes)
                     {
                         Debug.WriteLine(process);
                     }
@@ -156,37 +185,11 @@ namespace Cape_Changer
 
             File.Copy(selectedCape, pathCape);
             RestartMinecraft();
-
-            ChangeUpdateButtonColor();
-        }
-
-        private void SelectSkin(object sender, RoutedEventArgs e)
-        {
-            File.Delete(selectedSkin);
-
-            OpenFileDialog fileBrowser = new OpenFileDialog();
-
-            fileBrowser.Title = "Skin Texture";
-            fileBrowser.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
-
-            if (fileBrowser.ShowDialog() == true)
-            {
-                File.Copy(fileBrowser.FileName, selectedSkin);
-
-                DisplaySkin();
-            }
-        }
-
-        private void Update(object sender, RoutedEventArgs e)
-        {
-            //TODO...
         }
 
         private void DisplaySkin()
         {
-            BitmapImage bitmapImage = null;
-
-            Console.WriteLine(selectedSkin);
+            BitmapImage bitmapImage;
 
             if (File.Exists(selectedSkin))
             {
@@ -259,7 +262,7 @@ namespace Cape_Changer
             button.Foreground = null;
             button.BorderBrush = null;
 
-            button.Click += PreSelect;
+            button.Click += SelectCape;
 
             button.Background = new SolidColorBrush((System.Windows.Media.Color)System.
                 Windows.Media.ColorConverter.ConvertFromString("#FF5555"));
@@ -295,6 +298,7 @@ namespace Cape_Changer
             {
                 processes[0].Kill();
             }
+
             Thread.Sleep(1000);
             Process.Start("minecraft://");
         }
