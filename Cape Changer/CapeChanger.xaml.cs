@@ -17,12 +17,14 @@ namespace Cape_Changer
         public string minecraftSkinPath;
         public string minecraftStartPath;
         public string selectedCape;
+        public string selectedSkin;
 
         public CapeChanger()
         {
             minecraftSkinPath = FindSkinPackPath();
             if (minecraftSkinPath == "") Process.GetCurrentProcess().Kill();
 
+            selectedSkin = minecraftSkinPath + "/steve.png";
             InitializeComponent();
 
             foreach (string capePath in Directory.GetFiles(GetCapePath()))
@@ -112,8 +114,6 @@ namespace Cape_Changer
 
             if (!File.Exists(pathGeometry))
             {
-                Debug.WriteLine(pathGeometry);
-                Debug.WriteLine(Directory.GetCurrentDirectory());
                 File.Copy(Directory.GetCurrentDirectory() + "/resource/internal/geometry.json", pathGeometry);
             }
 
@@ -154,7 +154,17 @@ namespace Cape_Changer
 
         private void SelectSkin(object sender, RoutedEventArgs e)
         {
-            //TODO: Swourire
+            File.Delete(selectedSkin);
+
+            OpenFileDialog fileBrowser = new OpenFileDialog();
+
+            fileBrowser.Title = "Skin Texture";
+            fileBrowser.Filter = "Image Files|*.jpg;*.jpeg;*.png;";
+
+            if (fileBrowser.ShowDialog() == true)
+            {
+                File.Copy(fileBrowser.FileName, selectedSkin);
+            }
         }
 
         private void AddCapeInDisplayedList(Image image, string imagePath)
