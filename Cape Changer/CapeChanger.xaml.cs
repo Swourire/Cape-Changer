@@ -24,14 +24,19 @@ namespace Cape_Changer
             minecraftSkinPath = FindSkinPackPath();
             if (minecraftSkinPath == "") Process.GetCurrentProcess().Kill();
 
-            selectedSkin = minecraftSkinPath + "/steve.png";
+            selectedSkin = Path.Combine(minecraftSkinPath, @"\steve.png");
             InitializeComponent();
 
+            // Add all capes in the list :
             foreach (string capePath in Directory.GetFiles(GetCapePath()))
             {
                 AddCapeInDisplayedList(Image.FromFile(capePath), capePath);
             }
 
+            // Define the update button color :
+            ChangeUpdateButtonColor();
+
+            // Display the skin head :
             DisplaySkin();
         }
 
@@ -104,7 +109,6 @@ namespace Cape_Changer
                             Windows.Media.ColorConverter.ConvertFromString("#FF5555"));
                 }
             }
-
         }
 
         private void SelectCape(object sender, RoutedEventArgs e)
@@ -140,7 +144,7 @@ namespace Cape_Changer
                 {
                     File.Delete(pathCape);
                 }
-                catch(System.IO.IOException)
+                catch(IOException)
                 {
                    List<Process> processes = FileUtil.WhoIsLocking(pathCape);
                     foreach(Process process in processes)
@@ -152,6 +156,8 @@ namespace Cape_Changer
 
             File.Copy(selectedCape, pathCape);
             RestartMinecraft();
+
+            ChangeUpdateButtonColor();
         }
 
         private void SelectSkin(object sender, RoutedEventArgs e)
@@ -171,11 +177,18 @@ namespace Cape_Changer
             }
         }
 
+        private void Update(object sender, RoutedEventArgs e)
+        {
+            //TODO...
+        }
+
         private void DisplaySkin()
         {
             BitmapImage bitmapImage = null;
 
-            if(File.Exists(selectedCape))
+            Console.WriteLine(selectedSkin);
+
+            if (File.Exists(selectedSkin))
             {
                 bitmapImage = ImageUtils.ImageToBitmapImage(ImageUtils.CropImage(Image.FromFile(selectedSkin), new Rectangle(8, 8, 8, 8)));
             } 
@@ -203,7 +216,6 @@ namespace Cape_Changer
 
         private void AddCapeInDisplayedList(Image image, string imagePath)
         {
-
             // Get the cape image section width and height :
             int width = image.Width * 24 / image.Width;
             int height = image.Height * 18 / image.Height;
@@ -256,6 +268,23 @@ namespace Cape_Changer
 
             // Add the controle in the cape list :
             CapesList.Children.Add(button);
+        }
+
+        private void ChangeUpdateButtonColor()
+        {
+            string color;
+
+            if (File.Exists(selectedCape))
+            {
+                color = "#55FF55";
+            }
+            else
+            {
+                color = "#FF5555";
+            }
+
+            UpdateButton.Background = new SolidColorBrush((System.Windows.Media.Color)System.
+                            Windows.Media.ColorConverter.ConvertFromString(color));
         }
 
         private void RestartMinecraft()
