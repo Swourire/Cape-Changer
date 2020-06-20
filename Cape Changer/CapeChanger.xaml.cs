@@ -173,21 +173,32 @@ namespace Cape_Changer
 
         private void DisplaySkin()
         {
-            if(selectedSkin != null)
+            BitmapImage bitmapImage = null;
+
+            if(File.Exists(selectedCape))
             {
-                System.Windows.Controls.Image image = new System.Windows.Controls.Image();
+                bitmapImage = ImageUtils.ImageToBitmapImage(ImageUtils.CropImage(Image.FromFile(selectedSkin), new Rectangle(8, 8, 8, 8)));
+            } 
+            else
+            {
+                Bitmap bitmap = new Bitmap(8, 8);
 
-                BitmapImage bitmapImage = ImageUtils.ImageToBitmapImage(ImageUtils.CropImage(Image.FromFile(selectedSkin), new Rectangle(8, 8, 8, 8)));
+                for (int x = 0; x < bitmap.Width; x++) for (int y = 0; y < bitmap.Height; y++) 
+                        bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(255, 255, 85));
 
-                image.Source = bitmapImage;
-
-                image.HorizontalAlignment = HorizontalAlignment.Right;
-                image.VerticalAlignment = VerticalAlignment.Center;
-
-                image.Margin = new Thickness(0, 0, 150, 0);
-
-                Skin.Children.Add(image);
+                bitmapImage = ImageUtils.BitmapToBitmapImage(bitmap);
             }
+
+            System.Windows.Controls.Image image = new System.Windows.Controls.Image();
+
+            image.Source = bitmapImage;
+
+            image.HorizontalAlignment = HorizontalAlignment.Right;
+            image.VerticalAlignment = VerticalAlignment.Center;
+
+            image.Margin = new Thickness(0, 0, 150, 0);
+
+            Skin.Children.Add(image);
         }
 
         private void AddCapeInDisplayedList(Image image, string imagePath)
