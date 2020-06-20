@@ -187,7 +187,6 @@ namespace Cape_Changer
                 File.Copy(localStartScreen, distantStartScreen);
             }
 
-          
             if (File.Exists(pathCape))
             {
                 try
@@ -206,6 +205,8 @@ namespace Cape_Changer
 
             File.Copy(selectedCape, pathCape);
             RestartMinecraft();
+
+            MessageBox.Show("The skin is available in your default skin list on the game, you can change it.");
         }
 
         private bool CompareTwoFiles(string path1, string path2)
