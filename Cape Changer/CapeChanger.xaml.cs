@@ -8,7 +8,7 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
-
+using System.Windows.Media.Imaging;
 
 namespace Cape_Changer
 {
@@ -31,6 +31,8 @@ namespace Cape_Changer
             {
                 AddCapeInDisplayedList(Image.FromFile(capePath), capePath);
             }
+
+            DisplaySkin();
         }
 
         private string GetCapePath()
@@ -164,6 +166,27 @@ namespace Cape_Changer
             if (fileBrowser.ShowDialog() == true)
             {
                 File.Copy(fileBrowser.FileName, selectedSkin);
+
+                DisplaySkin();
+            }
+        }
+
+        private void DisplaySkin()
+        {
+            if(selectedSkin != null)
+            {
+                System.Windows.Controls.Image image = new System.Windows.Controls.Image();
+
+                BitmapImage bitmapImage = ImageUtils.ImageToBitmapImage(ImageUtils.CropImage(Image.FromFile(selectedSkin), new Rectangle(8, 8, 8, 8)));
+
+                image.Source = bitmapImage;
+
+                image.HorizontalAlignment = HorizontalAlignment.Right;
+                image.VerticalAlignment = VerticalAlignment.Center;
+
+                image.Margin = new Thickness(0, 0, 150, 0);
+
+                Skin.Children.Add(image);
             }
         }
 

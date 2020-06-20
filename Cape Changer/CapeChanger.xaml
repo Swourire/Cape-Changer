@@ -8,17 +8,22 @@
         Title="Cape Changer" Height="850" Width="767" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
             <RowDefinition/>
             <RowDefinition Height="0.4*"/>
         </Grid.RowDefinitions>
 
+        <Grid x:Name="Skin" Grid.Row="0" Background="#5555FF">
+            <Label Margin="150,0,0,0" VerticalAlignment="Center" Foreground="White" FontFamily="Calibri" FontWeight="Bold" FontSize="36">Cape Changer</Label>
+        </Grid>
+
         <!-- Select the cape in the list -->
-        <ScrollViewer>
-            <WrapPanel x:Name="CapesList" Grid.Row="0" Background="#FFDDDDDD"></WrapPanel>
+        <ScrollViewer Grid.Row="1">
+            <WrapPanel x:Name="CapesList" Background="#FFDDDDDD"></WrapPanel>
         </ScrollViewer>
 
         <!-- Bottom buttons -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
